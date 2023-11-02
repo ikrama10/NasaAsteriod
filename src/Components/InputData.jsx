@@ -34,7 +34,7 @@ const InputData = () => {
   
   return (
     <>
-      <div className="bg-gray-100">
+      <div className="bg-red-500">
         <div className="container mx-auto py-10">
           <div className="flex w-full justify-between items-center">
             <h2 className="w-2/4 text-2xl font-semibold text-[#718096]">
