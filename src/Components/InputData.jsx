@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-
+// import axios from "axios";
 
 const InputData = () => {
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
   });
-  const[validData,setValidData]=useState(false)
+  const [validData, setValidData] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [asteroidData, setAsteroidData] = useState(null);
 
+  
   const handleStartDateChange = (event) => {
     const newStartDate = new Date(event.target.value);
     setDateRange({ ...dateRange, startDate: newStartDate });
@@ -22,16 +25,19 @@ const InputData = () => {
     if (dateRange.startDate && dateRange.endDate) {
       const timeDifference = dateRange.endDate - dateRange.startDate;
       const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-      if(daysDifference<=7){
+      setValidData(daysDifference <= 7);
+      setIsLoading(daysDifference <= 7);
+
+      if (daysDifference <= 7) {
         setValidData(true);
-      }else{
+        setIsLoading(true);
+      } else {
         setValidData(false);
       }
     }
-
   };
 
-  
+
   return (
     <>
       <div className="bg-gray-100">
@@ -77,20 +83,15 @@ const InputData = () => {
               <input
                 className="border px-2 py-2 rounded"
                 type="Date"
-                placeholder="Enter a number"
+                placeholder=""
                 onChange={handleEndDateChange}
               />
             </div>
             <div>
-              {isDateRangeValid() ? (
-                <p className="opacity-0 absolute right--20">
-                  Date range is valid (gap is less than or equal to 7 days)
-                </p>
-              ) : (
+              {isDateRangeValid ? null: (
                 <p className="absolute right-0 w-80 p-4  bg-red-500 text-white">
-                  {" "}
-                  <span className="font-bold">Alert</span> <br />
-                  Please ensure that the ates should be in between 7 days
+                  <span className="font-bold ">Alert</span> <br />
+                  Please ensure that the Dates should be in between 7 days
                 </p>
               )}
             </div>
