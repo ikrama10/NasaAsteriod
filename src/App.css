@@ -1,9 +1,9 @@
-.isDateRangeValid {
-  animation:  3s ease-in-out forwards;
+.errorMsg {
+  animation: errorMsg 3s ease-in-out forwards;
 }
 
 
-@keyframes isDateRangeValid{
+@keyframes errorMsg{
     0%{
         transform: translateX(320px);
         opacity: 1;
