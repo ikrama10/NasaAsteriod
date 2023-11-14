@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../assets/loader.gif";
+import AsteriodApi from "./AsteriodApi";
 
 const InputData = () => {
   const [date, setDate] = useState({
@@ -38,21 +39,19 @@ const InputData = () => {
         `https://api.nasa.gov/neo/rest/v1/feed?start_date=${date.StartDate}&end_date=${date.EndDate}&api_key=qSPWLWuE0Myh5d3QtoTmQ9ALqULc5t0zZ3SHAiyF`
       );
 
-      const combinedData = Object.keys(resp.data.near_earth_objects).reduce(
+      const ApiFullData = Object.keys(resp.data.near_earth_objects).reduce(
         (acc, dateKey) => [...acc, ...resp.data.near_earth_objects[dateKey]],
         []
       );
-      console.log(combinedData)
+      console.log(ApiFullData);
 
-      // setApiData(resp.data.near_earth_objects);
-      setApiData(combinedData);
+      setApiData(ApiFullData);
       setIsLoading(false);
       setShowData(true);
     } catch (error) {
       setApiError(error.error_message);
       setShowData(false);
     }
-
   };
 
   useEffect(() => {
@@ -66,7 +65,7 @@ const InputData = () => {
     <>
       <div className="bg-gray-100">
         <div className="container mx-auto py-10">
-          <div className="flex w-full justify-between items-center">
+          <div className="flex w-full justify-between items-center ">
             <h2 className="w-[64%] text-2xl font-semibold text-[#718096]">
               Search Nearest Asteriods
             </h2>
@@ -139,6 +138,11 @@ const InputData = () => {
                 </div>
               ) : null}
             </div>
+          </div>
+          <div>
+            {showData ? (
+              <AsteriodApi apiError={apiError} apiData={apiData} isFav />
+            ) : null}
           </div>
         </div>
       </div>
