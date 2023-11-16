@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Loader from "../assets/loader.gif";
+import Loader from "../assets/Spin-1.6s-224px.gif";
 import AsteriodApi from "./AsteriodApi";
 
 const InputData = () => {
@@ -67,7 +67,9 @@ const InputData = () => {
         <div className="container mx-auto py-10">
           <div className="flex w-full justify-between items-center ">
             <h2 className="w-[64%] text-2xl font-semibold text-[#718096]">
-              Search Nearest Asteriods
+            {showData
+                ? `${apiData.length} Nearest Asteroids as per their closest approach`
+                : "Search Nearest Asteroids"}
             </h2>
             <form
               className="flex w-[37%] justify-between items-center"
