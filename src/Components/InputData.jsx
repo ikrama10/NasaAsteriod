@@ -14,6 +14,8 @@ const InputData = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showData, setShowData] = useState(false);
   const [isFav, setIsFav] = useState(false);
+  
+
 
   const validDateRange = () => {
     if (date.StartDate && date.EndDate) {
@@ -44,7 +46,6 @@ const InputData = () => {
         []
       );
       console.log(ApiFullData);
-
       setApiData(ApiFullData);
       setIsLoading(false);
       setShowData(true);
@@ -60,6 +61,7 @@ const InputData = () => {
       setValidDateError(false);
     }, 3200);
   }, [date.StartDate, date.EndDate]);
+
 
   return (
     <>
@@ -135,15 +137,16 @@ const InputData = () => {
             </div>
             <div>
               {isLoading ? (
-                <div className="fixed top-0 right-0 w-full h-screen bg-transparent-black flex items-center justify-center">
+                <div className="fixed  top-0 right-0 w-full h-screen bg-transparent-black flex flex-col items-center justify-center">
                   <img src={Loader} alt="Loading" className="w-1/12" />
+                  <p className="font-bold">Please wait</p>
                 </div>
               ) : null}
             </div>
           </div>
           <div>
             {showData ? (
-              <AsteriodApi apiError={apiError} apiData={apiData} isFav />
+              <AsteriodApi apiError={apiError} apiData={apiData}   />
             ) : null}
           </div>
         </div>
