@@ -26,11 +26,8 @@ const SignUp = ({}) => {
   const handleSignUp = async e => {
     e.preventDefault()
     try {
-      // console.log("Before createUserWithEmailAndPassword");
       await createUserWithEmailAndPassword(auth, email, password);
-    
-      // console.log("After createUserWithEmailAndPassword");
-      navigate('/')
+      navigate('/Dasboard')
     } catch (error) {
       console.error(error.message)
     }
