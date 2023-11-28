@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Loader from "../assets/Spin-1.6s-224px.gif";
+import Loader from "../../assets/Spin-1.6s-224px.gif";
 import AsteriodApi from "./AsteriodApi";
 
 const InputData = () => {

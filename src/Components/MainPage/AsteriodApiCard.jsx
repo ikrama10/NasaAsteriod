@@ -11,7 +11,7 @@ const AsteriodApiCard = (props) => {
 
   useEffect(() => {
     fetchFavorites();
-  }, []); // Fetch favorites when the component mounts
+  }, []); 
 
   const fetchFavorites = async () => {
     try {

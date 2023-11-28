@@ -14,7 +14,6 @@ const AsteriodApi = (props) => {
     setVelocityUnit(event.target.value);
   };
 
- 
 
   return (
     <>
