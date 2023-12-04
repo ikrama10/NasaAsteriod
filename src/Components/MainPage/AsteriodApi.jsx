@@ -6,6 +6,11 @@ const AsteriodApi = (props) => {
   const hasData = props.apiData && props.apiData.length > 0;
   const [diameterUnit, setDiameterUnit] = useState("km");
   const [velocityUnit, setVelocityUnit] = useState("km/s");
+  const [test,setTest]=useState([])
+  const handleFavourite=()=>{
+    setTest((prevTest)=>[...prevTest,props.apiData])
+  }
+
 
   const handleDiameterUnitChange = (event) => {
     setDiameterUnit(event.target.value);
@@ -13,7 +18,7 @@ const AsteriodApi = (props) => {
   const handleVelocityUnitChange = (event) => {
     setVelocityUnit(event.target.value);
   };
-
+  
 
   return (
     <>
@@ -74,6 +79,7 @@ const AsteriodApi = (props) => {
                 });
                 return (
                   <AsteriodApiCard 
+                    handleFavourite={handleFavourite}
                     key={index}
                     id={data.id}
                     name={data.name}
@@ -105,11 +111,11 @@ const AsteriodApi = (props) => {
 };
 const convertDiameter = (value, unit) => {
   switch (unit) {
-    case "meters":
+    case "Meters":
       return value * 1000;
-    case "miles":
+    case "Miles":
       return value * 0.621371;
-    case "feet":
+    case "Feet":
       return value * 3280.84;
     default:
       return value;
