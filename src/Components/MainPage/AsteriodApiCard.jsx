@@ -1,12 +1,26 @@
 import React, { useState,useEffect } from "react";
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as heartRegular } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as heartSolid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 
 
 const AsteriodApiCard = (props) => {
   const [isFavorite, setIsFavorite] = useState(false)
+  
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    // Perform add or remove favorite logic here using props.addFavAsteriod and props.removeFavAsteriod
+    if (isFavorite) {
+      props.removeFavAsteriod();
+    } else {
+      props.addFavAsteriod();
+    }
+  };
+  useEffect(() => {
+    // Update the state when props.isFavorite changes
+    setIsFavorite(props.isFavorite);
+  }, [props.isFavorite]);
 
 
   return (
@@ -17,6 +31,7 @@ const AsteriodApiCard = (props) => {
         <li className="w-1/12 px-1">{props.date}</li>
         <li className="w-1/12 px-2">{props.time}</li>
         <li className="w-2/12 px-2">{props.ab_magnitude}</li>
+        
         <li className="w-2/12 px-3">
           {props.max_diameter} - {props.min_diameter}
         </li>
@@ -24,17 +39,24 @@ const AsteriodApiCard = (props) => {
         <li className="w-1/12 px-1 text-center">
           {props.hazard ? "Yes" : "No"}
         </li>
-        <li className="favourite w-2/12 px-1 text-center cursor-pointer">
-          {/* <button onClick={props.handleFavourite()}><FontAwesomeIcon icon={isFavorite ? faSolidHeart : faHeart} /></button> */}
+        <li className="w-2/12 px-1 flex items-center justify-center">
+          {isFavorite ? (
+            <FontAwesomeIcon
+              icon={heartSolid}
+              className="text-xl text-gray-800"
+              onClick={toggleFavorite}
+            />
+          ) : (
+            <FontAwesomeIcon
+              className="text-xl text-gray-800"
+              icon={heartRegular}
+              onClick={toggleFavorite}
+            />
+          )}
         </li>
+        
       </ul>
-      {/* <ul>
-        {favoriteData.map((favorite) => (
-          <li key={favorite.id}>
-            {`ID: ${favorite.id},
-             Name: ${favorite.name}`}</li>
-        ))}
-      </ul> */}
+      
     </div>
   );
 };

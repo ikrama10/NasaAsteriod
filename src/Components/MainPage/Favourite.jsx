@@ -1,12 +1,14 @@
 import React, {useState} from 'react'
+import {faHeart as heartSolid} from '@fortawesome/free-solid-svg-icons'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
-const Favourite = ({apiData}) => {
-  const [favoriteData, setFavoriteData] = useState([])
-  console.log(apiData)
+const Favourite = props => {
+  // const [favoriteData, setFavoriteData] = useState([])
+
   return (
     <div>
       <div className="py-4">
-        {favoriteData && favoriteData.length > 0 ? (
+        {props.favApiData && props.favApiData.length > 0 ? (
           <>
             <h2 className="text-2xl text-gray-500 font-semibold text-center">
               Favourite Asteriods
@@ -22,14 +24,21 @@ const Favourite = ({apiData}) => {
             </div>
             <div className="fav-lower">
               <div className="w-6/12 mx-auto">
-                <ul>
+                <ul >
+                  
                   {''}
-                  {favoriteData.map((favorite, index) => {
-                    return <li key={index}>
-                      <h1>{favorite.id}</h1>
-                      <h1>{favorite.name}</h1>
-                      <h1>Remove</h1>
-                    </li>
+                  {props.favApiData.map((data, index) => {
+                    return (
+                      <li className='flex justify-between w-[100%] pt-4' key={index}>
+                        <h1>{data.id}</h1>
+                        <h1>{data.name}</h1>
+                        <FontAwesomeIcon
+                          icon={heartSolid}
+                          className="text-xl text-gray-800 w-[36%]"
+                          onClick={()=>{props.removeFavAsteriod(data.id)}}
+                        />
+                      </li>
+                    )
                   })}
                 </ul>
               </div>

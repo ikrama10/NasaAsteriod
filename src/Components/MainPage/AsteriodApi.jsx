@@ -1,25 +1,30 @@
-import React, { useState } from "react";
-import AsteriodApiCard from "./AsteriodApiCard";
+import React, {useState,useEffect} from 'react'
+import AsteriodApiCard from './AsteriodApiCard'
+import axios from 'axios'
 
 const AsteriodApi = (props) => {
   //   console.log(props.apiData)
-  const hasData = props.apiData && props.apiData.length > 0;
-  const [diameterUnit, setDiameterUnit] = useState("km");
-  const [velocityUnit, setVelocityUnit] = useState("km/s");
-  const [test,setTest]=useState([])
-  const handleFavourite=()=>{
-    setTest((prevTest)=>[...prevTest,props.apiData])
+  const hasData = props.apiData && props.apiData.length > 0
+  const [diameterUnit, setDiameterUnit] = useState('km')
+  const [velocityUnit, setVelocityUnit] = useState('km/s')
+  // const [apiData, setApiData] = useState(props.apiData || []);
+
+
+ 
+
+  const [test, setTest] = useState([])
+  const handleFavourite = () => {
+    setTest(prevTest => [...prevTest, props.apiData])
   }
 
+  const handleDiameterUnitChange = event => {
+    setDiameterUnit(event.target.value)
+  }
+  const handleVelocityUnitChange = event => {
+    setVelocityUnit(event.target.value)
+  }
 
-  const handleDiameterUnitChange = (event) => {
-    setDiameterUnit(event.target.value);
-  };
-  const handleVelocityUnitChange = (event) => {
-    setVelocityUnit(event.target.value);
-  };
-  
-
+ 
   return (
     <>
       {props.apiError ? (
@@ -68,68 +73,76 @@ const AsteriodApi = (props) => {
               </ul>
             </div>
 
-            {props.apiData &&
-              props.apiData.map((data, index) => {
-                const formattedTime = new Date(
-                  data.close_approach_data[0].close_approach_date_full
-                ).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                });
-                return (
-                  <AsteriodApiCard 
-                    handleFavourite={handleFavourite}
-                    key={index}
-                    id={data.id}
-                    name={data.name}
-                    date={data.close_approach_data[0].close_approach_date}
-                    time={formattedTime}
-                    ab_magnitude={data.absolute_magnitude_h}
-                    max_diameter={convertDiameter(
-                      data.estimated_diameter.kilometers.estimated_diameter_max,
-                      diameterUnit
-                    )}
-                    min_diameter={convertDiameter(
-                      data.estimated_diameter.kilometers.estimated_diameter_min,
-                      diameterUnit
-                    )}
-                    rel_velocity={convertVelocity(
-                      data.close_approach_data[0].relative_velocity
-                        .kilometers_per_second,
-                      velocityUnit
-                    )}
-                    hazard={data.is_potentially_hazardous_asteroid}
-                  />
-                );
-              })}
+            {props.apiData.map((data, index) => (
+              <div key={index}>
+                {data.close_approach_data.map((approach, approachIndex) => {
+                  const formattedTime = new Date(
+                    approach.close_approach_date_full,
+                  ).toLocaleTimeString([], {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,
+                  })
+
+                  return (
+                    <AsteriodApiCard
+                      handleFavourite={handleFavourite}
+                      key={approachIndex}
+                      id={data.id}
+                      name={data.name}
+                      date={approach.close_approach_date}
+                      time={formattedTime}
+                      ab_magnitude={data.absolute_magnitude_h}
+                      max_diameter={convertDiameter(
+                        data.estimated_diameter.kilometers
+                          .estimated_diameter_max,
+                        diameterUnit,
+                      )}
+                      min_diameter={convertDiameter(
+                        data.estimated_diameter.kilometers
+                          .estimated_diameter_min,
+                        diameterUnit,
+                      )}
+                      rel_velocity={convertVelocity(
+                        approach.relative_velocity.kilometers_per_second,
+                        velocityUnit,
+                      )}
+                      hazard={data.is_potentially_hazardous_asteroid}
+                      removeFavAsteriod={() => props.removeFavAsteriod(data.id)}
+                      addFavAsteriod={() => props.addFavAsteriod(data.id)}
+                    />
+                  )
+                })}
+              </div>
+            ))}
           </>
         )
       )}
     </>
-  );
-};
+  )
+}
+
 const convertDiameter = (value, unit) => {
   switch (unit) {
-    case "Meters":
-      return value * 1000;
-    case "Miles":
-      return value * 0.621371;
-    case "Feet":
-      return value * 3280.84;
+    case 'meters':
+      return value * 1000
+    case 'miles':
+      return value * 0.621371
+    case 'feet':
+      return value * 3280.84
     default:
-      return value;
+      return value
   }
-};
+}
 const convertVelocity = (value, unit) => {
   switch (unit) {
-    case "km/h":
-      return value * 3600; 
-    case "miles/h":
-      return value * 3600 * 0.621371;
+    case 'km/h':
+      return value * 3600
+    case 'miles/h':
+      return value * 3600 * 0.621371
     default:
-      return value; 
+      return value
   }
-};
+}
 
-export default AsteriodApi;
+export default AsteriodApi

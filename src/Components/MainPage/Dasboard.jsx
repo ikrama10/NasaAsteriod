@@ -11,7 +11,7 @@ function Dasboard() {
         <Navbar />
         <InputData />
         <AsteriodApi />
-        <Favourite />
+        {/* <Favourite /> */}
       </>
     </div>
   );
