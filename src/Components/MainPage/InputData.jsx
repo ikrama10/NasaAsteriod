@@ -19,8 +19,7 @@ const InputData = ({userEmail}) => {
 
   const [favApiData, setFavApiData] = useState([])
   const [favorites, setFavorites] = useState([])
-  const [matchedData, setMatchedData] = useState([]);
-
+  const [matchedData, setMatchedData] = useState([])
 
   const [isSingleID, setIsSingleID] = useState(false)
   const [totalLength, setTotalLength] = useState(0)
@@ -69,7 +68,7 @@ const InputData = ({userEmail}) => {
   useEffect(() => {
     validDateRange()
     setApiData()
-    favApiFetch();
+    favApiFetch()
     setTimeout(() => {
       setValidDateError(false)
     }, 3200)
@@ -81,9 +80,9 @@ const InputData = ({userEmail}) => {
       .then(resp => {
         setFavApiData(resp.data)
         setMatchedData(
-          favApiData.filter((data) => {
-            return data.email === userEmail;
-          })
+          resp.data.filter(data => {
+            return data.email === userEmail
+          }),
         )
       })
       .catch(err => {
@@ -97,13 +96,17 @@ const InputData = ({userEmail}) => {
       return
     }
     try {
-      await axios.post(`http://localhost:3500/Favourite`, {
-        email: userEmail,
-        name: dataToAdd?.name,
-        id: dataToAdd?.id,
-      })
-      setFavorites(prevFav => [...prevFav, dataToAdd]);
-      favApiFetch();
+      await axios
+        .post(`http://localhost:3500/Favourite`, {
+          email: userEmail,
+          name: dataToAdd?.name,
+          id: dataToAdd?.id,
+        })
+        .then(res => {
+          setFavorites(prevFav => [...prevFav, dataToAdd])
+          favApiFetch()
+        })
+        .catch(err => console.log())
     } catch (error) {
       console.log(error)
     }
@@ -111,9 +114,9 @@ const InputData = ({userEmail}) => {
 
   const removeFavAsteriod = async dataID => {
     await axios.delete(`http://localhost:3500/Favourite/${dataID}`)
-   
+
     setFavorites(prevFav => prevFav.filter(fav => fav.id !== dataID))
-    favApiFetch();
+    favApiFetch()
   }
 
   const makeSingleId = dataID => {
@@ -250,10 +253,12 @@ const InputData = ({userEmail}) => {
             ) : null}
           </div>
 
-          <Favourite
-            matchedData={matchedData}
-            removeFavAsteriod={removeFavAsteriod}
-          />
+          {matchedData?.length > 0 && (
+            <Favourite
+              matchedData={matchedData}
+              removeFavAsteriod={removeFavAsteriod}
+            />
+          )}
         </div>
       </div>
     </>
