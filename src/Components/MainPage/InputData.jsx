@@ -4,7 +4,8 @@ import Loader from '../../assets/Spin-1.6s-224px.gif'
 import AsteriodApi from './AsteriodApi'
 import Favourite from './Favourite'
 
-const InputData = () => {
+const InputData = ({userEmail}) => {
+  // console.log(email);
   const [date, setDate] = useState({
     StartDate: '',
     EndDate: '',
@@ -18,13 +19,12 @@ const InputData = () => {
 
   const [favApiData, setFavApiData] = useState([])
   const [favorites, setFavorites] = useState([])
+  const [matchedData, setMatchedData] = useState([]);
+
 
   const [isSingleID, setIsSingleID] = useState(false)
   const [totalLength, setTotalLength] = useState(0)
   const [searchId, setSearchId] = useState('')
-
-  const [user, setUser] = useState(null);
-
 
   const searchInputRef = useRef(null)
 
@@ -69,7 +69,7 @@ const InputData = () => {
   useEffect(() => {
     validDateRange()
     setApiData()
-    favApiFetch()
+    favApiFetch();
     setTimeout(() => {
       setValidDateError(false)
     }, 3200)
@@ -79,8 +79,12 @@ const InputData = () => {
     await axios
       .get(`http://localhost:3500/Favourite`)
       .then(resp => {
-        console.log(resp.data)
         setFavApiData(resp.data)
+        setMatchedData(
+          favApiData.filter((data) => {
+            return data.email === userEmail;
+          })
+        )
       })
       .catch(err => {
         console.log(err)
@@ -92,22 +96,24 @@ const InputData = () => {
       console.error(`Data with ID ${dataID} not found`)
       return
     }
-    try{
-      await axios.post(`http://localhost:3500/Favourite`, dataToAdd
-      )
-      favApiFetch()
-      setFavorites(prevFav => [...prevFav, dataToAdd])
+    try {
+      await axios.post(`http://localhost:3500/Favourite`, {
+        email: userEmail,
+        name: dataToAdd?.name,
+        id: dataToAdd?.id,
+      })
+      setFavorites(prevFav => [...prevFav, dataToAdd]);
+      favApiFetch();
+    } catch (error) {
+      console.log(error)
     }
-    catch(error){
-      console.log(error);
-    }
-    
   }
 
   const removeFavAsteriod = async dataID => {
     await axios.delete(`http://localhost:3500/Favourite/${dataID}`)
-    favApiFetch()
+   
     setFavorites(prevFav => prevFav.filter(fav => fav.id !== dataID))
+    favApiFetch();
   }
 
   const makeSingleId = dataID => {
@@ -235,11 +241,19 @@ const InputData = () => {
           </div>
           <div>
             {showData ? (
-              <AsteriodApi apiError={apiError} apiData={apiData} addFavAsteriod={addFavAsteriod} removeFavAsteriod={removeFavAsteriod}/>
+              <AsteriodApi
+                apiError={apiError}
+                apiData={apiData}
+                addFavAsteriod={addFavAsteriod}
+                removeFavAsteriod={removeFavAsteriod}
+              />
             ) : null}
           </div>
 
-          <Favourite favApiData={favApiData} removeFavAsteriod={removeFavAsteriod} />
+          <Favourite
+            matchedData={matchedData}
+            removeFavAsteriod={removeFavAsteriod}
+          />
         </div>
       </div>
     </>

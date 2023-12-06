@@ -8,7 +8,7 @@ const Favourite = props => {
   return (
     <div>
       <div className="py-4">
-        {props.favApiData && props.favApiData.length > 0 ? (
+        {props.matchedData && props.matchedData.length > 0 ? (
           <>
             <h2 className="text-2xl text-gray-500 font-semibold text-center">
               Favourite Asteriods
@@ -27,7 +27,7 @@ const Favourite = props => {
                 <ul >
                   
                   {''}
-                  {props.favApiData.map((data, index) => {
+                  {props.matchedData.map((data, index) => {
                     return (
                       <li className='flex justify-between w-[100%] pt-4' key={index}>
                         <h1>{data.id}</h1>
