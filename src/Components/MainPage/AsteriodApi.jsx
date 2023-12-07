@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react'
 import AsteriodApiCard from './AsteriodApiCard'
 import axios from 'axios'
+import Favourite from './Favourite'
 
 const AsteriodApi = (props) => {
   //   console.log(props.apiData)
@@ -8,6 +9,7 @@ const AsteriodApi = (props) => {
   const [diameterUnit, setDiameterUnit] = useState('km')
   const [velocityUnit, setVelocityUnit] = useState('km/s')
   // const [apiData, setApiData] = useState(props.apiData || []);
+  const [isFav,setIsFav]=useState()
 
 
  
@@ -76,6 +78,11 @@ const AsteriodApi = (props) => {
             {props.apiData.map((data, index) => (
               <div key={index}>
                 {data.close_approach_data.map((approach, approachIndex) => {
+                  // console.log(props.favourite[0].asteriodId);
+                  const isFav =props.favourite.some(
+                    (fav) =>fav.asteriodId===data.id
+
+                  )
                   const formattedTime = new Date(
                     approach.close_approach_date_full,
                   ).toLocaleTimeString([], {
@@ -108,7 +115,8 @@ const AsteriodApi = (props) => {
                         velocityUnit,
                       )}
                       hazard={data.is_potentially_hazardous_asteroid}
-                      removeFavAsteriod={() => props.removeFavAsteriod(data.id)}
+                      isFav={isFav}
+                      removeFavAsteriod={() => props.handleRemoveFav(data.id)}
                       addFavAsteriod={() => props.addFavAsteriod(data.id)}
                     />
                   )

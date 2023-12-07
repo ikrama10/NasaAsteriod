@@ -72,18 +72,19 @@ const InputData = ({userEmail}) => {
     setTimeout(() => {
       setValidDateError(false)
     }, 3200)
-  }, [date.StartDate, date.EndDate])
+  }, [date.StartDate, date.EndDate,userEmail])
 
   const favApiFetch = async () => {
     await axios
       .get(`http://localhost:3500/Favourite`)
       .then(resp => {
         setFavApiData(resp.data)
-        setMatchedData(
-          resp.data.filter(data => {
-            return data.email === userEmail
-          }),
-        )
+        const fetchData = resp.data.filter(data => {
+          return data.email === userEmail
+        })
+        setMatchedData(fetchData);
+        setFavorites(fetchData)
+        console.log(favorites);
       })
       .catch(err => {
         console.log(err)
@@ -103,7 +104,7 @@ const InputData = ({userEmail}) => {
           asteriodId: dataToAdd?.id,
         })
         .then(res => {
-          setFavorites(prevFav => [...prevFav, dataToAdd])
+          // setFavorites(prevFav => [...prevFav, dataToAdd])
           favApiFetch()
         })
         .catch(err => console.log())
@@ -111,6 +112,13 @@ const InputData = ({userEmail}) => {
       console.log(error)
     }
   }
+const handleRemoveFav = (asteriodId)=>{
+  favApiFetch()
+  const matchValue =matchedData.filter((data)=>{
+    return data.asteriodId===asteriodId;
+  })
+  removeFavAsteriod(matchValue[0].id)
+}
 
   const removeFavAsteriod = async dataID => {
     await axios.delete(`http://localhost:3500/Favourite/${dataID}`)
@@ -248,7 +256,8 @@ const InputData = ({userEmail}) => {
                 apiError={apiError}
                 apiData={apiData}
                 addFavAsteriod={addFavAsteriod}
-                removeFavAsteriod={removeFavAsteriod}
+                handleRemoveFav={handleRemoveFav}
+                favourite={favorites}
               />
             ) : null}
           </div>
@@ -256,7 +265,7 @@ const InputData = ({userEmail}) => {
           {matchedData?.length > 0 && (
             <Favourite
               matchedData={matchedData}
-              removeFavAsteriod={removeFavAsteriod}
+              handleRemoveFav={handleRemoveFav}
             />
           )}
         </div>

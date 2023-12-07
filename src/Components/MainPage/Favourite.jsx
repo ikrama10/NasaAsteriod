@@ -35,7 +35,7 @@ const Favourite = props => {
                         <FontAwesomeIcon
                           icon={heartSolid}
                           className="text-xl text-gray-800 w-[36%]"
-                          onClick={()=>{props.removeFavAsteriod(data.id)}}
+                          onClick={()=>{props.handleRemoveFav(data.asteriodId)}}
                         />
                       </li>
                     )

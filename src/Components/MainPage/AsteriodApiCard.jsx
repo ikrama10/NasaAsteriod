@@ -8,17 +8,17 @@ import axios from "axios";
 const AsteriodApiCard = (props) => {
   const [isFavorite, setIsFavorite] = useState(false)
   
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    if (isFavorite) {
-      props.removeFavAsteriod(props.id);
-    } else {
-      props.addFavAsteriod(props.id);
-    }
-  };
-  useEffect(() => {
-    setIsFavorite(props.isFavorite);
-  }, [props.isFavorite]);
+  // const toggleFavorite = () => {
+  //   // setIsFavorite(!isFavorite);
+  //   if (isFavorite) {
+  //     props.removeFavAsteriod(props.id);
+  //   } else {
+  //     props.addFavAsteriod(props.id);
+  //   }
+  // };
+  // useEffect(() => {
+  //   setIsFavorite(props.isFavorite);
+  // }, [props.isFavorite]);
 
 
   return (
@@ -38,11 +38,19 @@ const AsteriodApiCard = (props) => {
           {props.hazard ? "Yes" : "No"}
         </li>
         <li className="w-2/12 px-1 flex items-center justify-center">
-          <FontAwesomeIcon
-            icon={isFavorite ? heartSolid : heartRegular}
-            className="text-xl text-gray-800"
-            onClick={toggleFavorite}
-          />
+          {props.isFav ? (
+            <FontAwesomeIcon
+              icon={heartSolid}
+              className="text-xl text-gray-800"
+              onClick={props.removeFavAsteriod}
+            />
+          ) : (
+            <FontAwesomeIcon
+              className="text-xl text-gray-800"
+              icon={heartRegular}
+              onClick={props.addFavAsteriod}
+            />
+          )}
         </li>
         
       </ul>
