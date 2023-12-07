@@ -100,7 +100,7 @@ const InputData = ({userEmail}) => {
         .post(`http://localhost:3500/Favourite`, {
           email: userEmail,
           name: dataToAdd?.name,
-          id: dataToAdd?.id,
+          asteriodId: dataToAdd?.id,
         })
         .then(res => {
           setFavorites(prevFav => [...prevFav, dataToAdd])

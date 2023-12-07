@@ -10,15 +10,13 @@ const AsteriodApiCard = (props) => {
   
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    // Perform add or remove favorite logic here using props.addFavAsteriod and props.removeFavAsteriod
     if (isFavorite) {
-      props.removeFavAsteriod();
+      props.removeFavAsteriod(props.id);
     } else {
-      props.addFavAsteriod();
+      props.addFavAsteriod(props.id);
     }
   };
   useEffect(() => {
-    // Update the state when props.isFavorite changes
     setIsFavorite(props.isFavorite);
   }, [props.isFavorite]);
 
@@ -40,19 +38,11 @@ const AsteriodApiCard = (props) => {
           {props.hazard ? "Yes" : "No"}
         </li>
         <li className="w-2/12 px-1 flex items-center justify-center">
-          {isFavorite ? (
-            <FontAwesomeIcon
-              icon={heartSolid}
-              className="text-xl text-gray-800"
-              onClick={toggleFavorite}
-            />
-          ) : (
-            <FontAwesomeIcon
-              className="text-xl text-gray-800"
-              icon={heartRegular}
-              onClick={toggleFavorite}
-            />
-          )}
+          <FontAwesomeIcon
+            icon={isFavorite ? heartSolid : heartRegular}
+            className="text-xl text-gray-800"
+            onClick={toggleFavorite}
+          />
         </li>
         
       </ul>

@@ -30,7 +30,7 @@ const Favourite = props => {
                   {props.matchedData.map((data, index) => {
                     return (
                       <li className='flex justify-between w-[100%] pt-4' key={index}>
-                        <h1>{data.id}</h1>
+                        <h1>{data.asteriodId}</h1>
                         <h1>{data.name}</h1>
                         <FontAwesomeIcon
                           icon={heartSolid}
